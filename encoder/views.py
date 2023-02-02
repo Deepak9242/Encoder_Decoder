@@ -40,18 +40,19 @@ def upload(request):
 
 def handle_decode(f):
     upload_decode(f.name,f.read())
-    with open("encoder/static/decode/upload/"+f.name,'wb+') as file:
-        for chunk in f.chunks():
-            file.write(chunk)
+    #with open("encoder/static/decode/upload/"+f.name,'wb+') as file:
+    #    for chunk in f.chunks():
+    #        file.write(chunk)
     file_content = Decode_64(f.name)
     response = HttpResponse(file_content, content_type='application/*')
     response['Content-Disposition'] = f'attachment; filename="{f.name[:-4]}"'
     return response
 
 def handle_encode(f):
-    with open("encoder/static/encode/upload/"+f.name,'wb+') as file:
-        for chunk in f.chunks():
-            file.write(chunk)
+    upload_encode(f.name,f.read())
+    #with open("encoder/static/encode/upload/"+f.name,'wb+') as file:
+    #    for chunk in f.chunks():
+    #        file.write(chunk)
     file_content = Encode_64(f.name)
     response = HttpResponse(file_content, content_type='text/*')
     response['Content-Disposition'] = f'attachment; filename="{f.name}.txt"'
