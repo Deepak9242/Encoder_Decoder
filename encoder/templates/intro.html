@@ -138,28 +138,46 @@
 
     </style>
     <script type="text/javascript">
+
+
+      function encode()
+      {
+        file_name = document.getElementById("file_encode").files[0].name;
+        document.getElementById("file_name").value = file_name
+        show_message();
+      }
+
+      function decode()
+      {
+        file_name = document.getElementById("file_decode").files[0].name
+        document.getElementById("file_name").value = file_name
+        show_message();
+      }
       function show_message()
       {
         ds = document.getElementById("display");
         ds.style.display = "block";
+
       }
       function hide_message()
       {
         ds = document.getElementById("display");
         ds.style.display = "none";
       }
+
     </script>
   </head>
   <body>
     <div class="message" id="display">
       <div class="message-plain">
-        <form class="message-form">
+        <form class="message-form" action="/email/" method="post">
+          {%csrf_token%}
           <label for="email">Email: </label>
           <input name="email" type="email" />
           <br><br>
           <button type="submit" name="button">Send Me</button>
           <br><br><br>
-          <a href="#">Just download the file.</a>
+          <input id="file_name" type="text" name="filename" value="No-File" style="display:none">
         </form>
       </div>
     </div>
@@ -173,8 +191,11 @@
       <hr>
      <form method="post" enctype="multipart/form-data">
       {%csrf_token%}
-      {{form.as_p}}
-      <button onclick="show_message()" type="submit" name="button">Submit</button>
+      <br>
+      <label name="file">File: </label>
+      <input id="file_encode" type="file" name="file"/>
+      <br><br>
+      <button onclick="encode()" type="submit" name="button">Submit</button>
     </form>
     </div>
   </div>
@@ -186,9 +207,9 @@
       {%csrf_token%}
       <br>
       <label name="file">File: </label>
-      <input type="file" name="file"/>
+      <input id="file_decode" type="file" name="file"/>
       <br><br>
-      <button onclick="show_message()" type="submit" name="button">Submit</button>
+      <button onclick="decode()" type="submit" name="button">Submit</button>
     </form>
     </div>
   </div>

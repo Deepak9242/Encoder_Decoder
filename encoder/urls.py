@@ -4,5 +4,6 @@ from . import views
 urlpatterns = [
     path('encode/', views.encode, name='encode'),
     path('upload/', views.upload, name='upload'),
-    path('decode/', views.decode, name='decode')
+    path('decode/', views.decode, name='decode'),
+    path('email/' , views.email,  name='email')
 ]

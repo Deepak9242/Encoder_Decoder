@@ -12,6 +12,16 @@ def encode(request):
     template = loader.get_template('intro.html')
     return HttpResponse(template.render())
 
+
+def email(request):
+    if request.method=="POST":
+        file_name = request.POST['filename']
+        email = request.POST['email']
+        print(file_name)
+        return HttpResponse(f"send mail to {email} of file {file_name}.")
+    else:
+        return HttpResponse("invalid")
+
 def decode(request):
     if request.method=='POST':
         if request.FILES['file'].size > 5*1024*1024:
