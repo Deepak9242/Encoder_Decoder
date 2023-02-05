@@ -144,6 +144,7 @@
       {
         file_name = document.getElementById("file_encode").files[0].name;
         document.getElementById("file_name").value = file_name
+        document.getElementById("typ").value = "encode"
         show_message();
       }
 
@@ -151,6 +152,7 @@
       {
         file_name = document.getElementById("file_decode").files[0].name
         document.getElementById("file_name").value = file_name
+        document.getElementById("typ").value = "decode"
         show_message();
       }
       function show_message()
@@ -178,6 +180,7 @@
           <button type="submit" name="button">Send Me</button>
           <br><br><br>
           <input id="file_name" type="text" name="filename" value="No-File" style="display:none">
+          <input id="typ" type="text" name="typ" value="No-File" style="display:none">
         </form>
       </div>
     </div>

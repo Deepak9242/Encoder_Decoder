@@ -5,7 +5,7 @@ from encoder.forms import ImageForm
 from encoder.encode import Encode_64,Decode_64
 from encoder.messenger import sendmessage
 from encoder.models import upload_encode,download_encode,upload_decode,download_decode
-
+from encoder.tasks import send_mail
 
 # Create your views here.
 def encode(request):
@@ -17,8 +17,9 @@ def email(request):
     if request.method=="POST":
         file_name = request.POST['filename']
         email = request.POST['email']
-        print(file_name)
-        return HttpResponse(f"send mail to {email} of file {file_name}.")
+        typ = request.POST['typ']
+        send_mail.delay(email,file_name,typ)
+        return HttpResponse(f"send mail to {email} of file {file_name} of type {typ}")
     else:
         return HttpResponse("invalid")
 
@@ -54,6 +55,7 @@ def handle_decode(f):
     #    for chunk in f.chunks():
     #        file.write(chunk)
     file_content = Decode_64(f.name)
+    download_decode(f.name,bytes(file_content))
     response = HttpResponse(file_content, content_type='application/*')
     response['Content-Disposition'] = f'attachment; filename="{f.name[:-4]}"'
     return response
@@ -64,6 +66,7 @@ def handle_encode(f):
     #    for chunk in f.chunks():
     #        file.write(chunk)
     file_content = Encode_64(f.name)
+    download_encode(f.name,bytes(file_content,encoding='utf-8'))
     response = HttpResponse(file_content, content_type='text/*')
     response['Content-Disposition'] = f'attachment; filename="{f.name}.txt"'
     return response
