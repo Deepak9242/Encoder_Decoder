@@ -5,23 +5,28 @@ from encoder.forms import ImageForm
 from encoder.encode import Encode_64,Decode_64
 from encoder.messenger import sendmessage
 from encoder.models import upload_encode,download_encode,upload_decode,download_decode
-from encoder.tasks import send_mail
+from encoder.tasks import send_mail_encode,send_mail_decode
 
 # Create your views here.
-def encode(request):
-    template = loader.get_template('intro.html')
-    return HttpResponse(template.render())
+
+
+def error(request):
+    return render(request,"error.html")
 
 
 def email(request):
     if request.method=="POST":
+        #template = loader.get_template('uploaded.html')
         file_name = request.POST['filename']
         email = request.POST['email']
         typ = request.POST['typ']
-        send_mail.delay(email,file_name,typ)
-        return HttpResponse(f"send mail to {email} of file {file_name} of type {typ}")
+        if typ=="encode":
+            send_mail_encode.delay(email,file_name)
+        else:
+            send_mail_decode.delay(email,file_name)
+        return render(request,"uploaded.html")
     else:
-        return HttpResponse("invalid")
+        return render(request,"error.html")
 
 def decode(request):
     if request.method=='POST':
@@ -31,11 +36,12 @@ def decode(request):
             return HttpResponse("No File Found")
         else:
             return handle_decode(request.FILES['file'])
-
+    else:
+        return render(request,"error.html")
 
 
 def upload(request):
-    template = loader.get_template('uploaded.html')
+    #template = loader.get_template('uploaded.html')
     if request.method=='POST':
         if request.FILES['file'].size > 5*1024*1024:
             return HttpResponse("File Size TOO BIG")
