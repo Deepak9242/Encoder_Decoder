@@ -25,7 +25,9 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG',cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS',cast=Csv())
+ALLOWED_HOSTS = ["127.0.0.1","43.207.42.117"]
+
+CSRF_TRUSTED_ORIGINS = ["http://localhost","http://ec2-43-207-42-117.ap-northeast-1.compute.amazonaws.com"]
 
 
 # Application definition
