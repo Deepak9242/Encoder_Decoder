@@ -3,7 +3,7 @@ import base64
 from encoder.models import DecodedDataUpload,EncodedDataUpload,EncodedDataDownload,download_encode
 
 def Encode_64(filename):
-    file_path = f"encoder/static/encode/upload/{filename}"
+    #file_path = f"encoder/static/encode/upload/{filename}"
     record = EncodedDataUpload.objects.filter(name=filename)
     #tex = open(file_path,'rb+')
     tex = record.values()[0]['data']
@@ -18,7 +18,7 @@ def Encode_64(filename):
     return file_content
 
 def Decode_64(filename):
-    file_path = f"encoder/static/decode/upload/{filename}"
+    #file_path = f"encoder/static/decode/upload/{filename}"
     print(filename)
     record = DecodedDataUpload.objects.filter(name=filename)
     #tex = open(file_path,'rb+')
